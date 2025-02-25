@@ -6,13 +6,15 @@
         xmlns:local="clr-namespace:Lithicsoft_AI_Studio_Installer"
         mc:Ignorable="d"
         Title="Lithicsoft AI Studio Installer" Height="450" Width="800"
-        ResizeMode="NoResize" Closing="Window_Closing">
+        ResizeMode="NoResize" Closing="Window_Closing"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True">
     <Grid Loaded="Grid_Loaded">
-        <Label Content="What's new?" Margin="10,10,0,0" FontFamily="Arial" FontSize="16" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="101"/>
-        <WebBrowser x:Name="webBrowser" Margin="0,43,0,50" Source="https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/changelog.html"/>
-        <ProgressBar x:Name="ProcessBar" Margin="10,0,10,10" Foreground="#FF0078D7" Height="10" VerticalAlignment="Bottom" FontFamily="Arial" Background="White"/>
-        <Button x:Name="ControlButton" Content="Install" Margin="0,9,11,0" HorizontalAlignment="Right" Width="100" Height="29" VerticalAlignment="Top" Click="Button_Click" FontFamily="Arial" Background="White"/>
-        <Label x:Name="Information" Content="Waiting ..." Margin="10,0,0,20" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="680" FontFamily="Arial"/>
-        <Label x:Name="ProcessPercent" Content="0%" Margin="0,0,11,20" HorizontalContentAlignment="Right" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="94" FontFamily="Arial"/>
+        <Label Content="What's new?" Margin="10,10,0,0" FontFamily="Arial" FontSize="16" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="101" VerticalContentAlignment="Center"/>
+        <WebBrowser x:Name="webBrowser" Margin="10,43,10,50" Source="https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/changelog.html"/>
+        <ProgressBar x:Name="ProcessBar" Margin="10,0,10,10" Foreground="#FF0078D7" Height="10" VerticalAlignment="Bottom" FontFamily="Arial"/>
+        <Button x:Name="ControlButton" Content="Install" Margin="0,9,11,0" HorizontalAlignment="Right" Width="100" Height="29" VerticalAlignment="Top" Click="Button_Click" FontFamily="Arial"/>
+        <Label x:Name="Information" Content="Waiting ..." Margin="10,0,0,20" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="680" FontFamily="Arial" VerticalContentAlignment="Bottom"/>
+        <Label x:Name="ProcessPercent" Content="0%" Margin="0,0,11,20" HorizontalContentAlignment="Right" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="94" FontFamily="Arial" VerticalContentAlignment="Bottom"/>
     </Grid>
 </Window>

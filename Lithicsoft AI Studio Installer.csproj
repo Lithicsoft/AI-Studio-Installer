@@ -27,4 +27,9 @@
     <Content Include="Assets\AI-Studio.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ModernWpf.MessageBox" Version="0.5.2" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+  </ItemGroup>
+
 </Project>

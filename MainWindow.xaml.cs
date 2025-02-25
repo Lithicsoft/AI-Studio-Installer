@@ -7,7 +7,7 @@ using Path = System.IO.Path;
 using System.IO.Compression;
 using System.ComponentModel;
 using System.Net.Http;
-using System.Windows.Controls;
+using MessageBox = ModernWpf.MessageBox;
 
 namespace Lithicsoft_AI_Studio_Installer;
 
@@ -83,7 +83,7 @@ public partial class MainWindow : Window
         try
         {
             isWorking = true;
-            await Task.Run(() => AIStudio());
+            await Task.Run(() => Dispatcher.Invoke(() => AIStudio()));
         }
         catch (Exception ex)
         {
@@ -191,10 +191,10 @@ public partial class MainWindow : Window
             {
                 DirectoryPermissionHelper.SetFullControlPermissions(destinationFolder);
                 CreateShortcut("Lithicsoft AI Studio", Path.GetFullPath(Path.Combine(destinationFolder, "Lithicsoft AI Studio.exe")));
-                ShowNotification("Installation Complete", "Lithicsoft AI Studio has been installed!");
 
                 Dispatcher.Invoke(() =>
                 {
+                    ShowNotification("Installation Complete", "Lithicsoft AI Studio has been installed!");
                     Information.Content = "Waiting ...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
@@ -203,10 +203,9 @@ public partial class MainWindow : Window
             }
             else
             {
-                ShowNotification("Update Complete", "Lithicsoft AI Studio has been updated!");
-
                 Dispatcher.Invoke(() =>
                 {
+                    ShowNotification("Update Complete", "Lithicsoft AI Studio has been updated!");
                     Information.Content = "Waiting ...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
@@ -307,8 +306,11 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error creating shortcut: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Clipboard.SetText(ex.ToString());
+            Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show($"Error creating shortcut: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Clipboard.SetText(ex.ToString());
+            });
         }
     }
 
