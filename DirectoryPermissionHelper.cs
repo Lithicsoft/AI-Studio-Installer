@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace Lithicsoft_Trainer_Studio_Installer
+namespace Lithicsoft_AI_Studio_Installer
 {
     public static class DirectoryPermissionHelper
     {
