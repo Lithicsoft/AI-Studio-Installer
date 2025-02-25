@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     private bool isWorking = false;
     private bool isInstalled = false;
     private string localFilePath = ".build";
-    private string url = "https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/update.txt";
+    private string url = "https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/update.datas";
 
     public MainWindow()
     {
