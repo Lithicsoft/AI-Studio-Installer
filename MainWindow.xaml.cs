@@ -6,6 +6,8 @@ using File = System.IO.File;
 using Path = System.IO.Path;
 using System.IO.Compression;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Windows.Controls;
 
 namespace Lithicsoft_AI_Studio_Installer;
 
@@ -28,6 +30,8 @@ public partial class MainWindow : Window
     {
         try
         {
+            LoadHtml();
+
             if (File.Exists(".build") && Directory.Exists("Lithicsoft AI Studio"))
             {
                 UpdateBuildTitle();
@@ -55,6 +59,23 @@ public partial class MainWindow : Window
         }
     }
 
+    private async void LoadHtml()
+    {
+        string url = "https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/changelog.html";
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                string htmlContent = await client.GetStringAsync(url);
+                webBrowser.NavigateToString(htmlContent);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading page: " + ex.Message);
+            }
+        }
+    }
+
     private async void Button_Click(object sender, RoutedEventArgs e)
     {
         ControlButton.IsEnabled = false;
@@ -68,10 +89,6 @@ public partial class MainWindow : Window
         {
             MessageBox.Show($"Update failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             Clipboard.SetText(ex.ToString());
-        }
-        finally
-        {
-            isWorking = false;
         }
     }
 
@@ -181,6 +198,7 @@ public partial class MainWindow : Window
                     Information.Content = "Waiting ...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
+                    isWorking = false;
                 });
             }
             else
@@ -192,6 +210,7 @@ public partial class MainWindow : Window
                     Information.Content = "Waiting ...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
+                    isWorking = false;
                 });
             }
 

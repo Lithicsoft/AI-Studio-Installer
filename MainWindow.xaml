@@ -9,7 +9,7 @@
         ResizeMode="NoResize" Closing="Window_Closing">
     <Grid Loaded="Grid_Loaded">
         <Label Content="What's new?" Margin="10,10,0,0" FontFamily="Arial" FontSize="16" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="101"/>
-        <WebBrowser Margin="0,43,0,50" Source="https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/changelog.txt"/>
+        <WebBrowser x:Name="webBrowser" Margin="0,43,0,50" Source="https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/changelog.html"/>
         <ProgressBar x:Name="ProcessBar" Margin="10,0,10,10" Foreground="#FF0078D7" Height="10" VerticalAlignment="Bottom" FontFamily="Arial"/>
         <Button x:Name="ControlButton" Content="Install" Margin="0,9,11,0" HorizontalAlignment="Right" Width="50" Height="29" VerticalAlignment="Top" Click="Button_Click" FontFamily="Arial"/>
         <Label x:Name="Information" Content="Waiting ..." Margin="10,0,0,20" Height="26" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="680" FontFamily="Arial"/>
