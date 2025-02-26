@@ -8,6 +8,8 @@ using System.IO.Compression;
 using System.ComponentModel;
 using System.Net.Http;
 using MessageBox = ModernWpf.MessageBox;
+using System.Security.Cryptography;
+using System;
 
 namespace Lithicsoft_AI_Studio_Installer;
 
@@ -20,6 +22,7 @@ public partial class MainWindow : Window
     private bool isInstalled = false;
     private string localFilePath = ".build";
     private string url = "https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/update.datas";
+    private string hashUrl = "https://raw.githubusercontent.com/Lithicsoft/Lithicsoft-Trainer-Studio/refs/heads/main/verify.sha256";
 
     public MainWindow()
     {
@@ -133,7 +136,10 @@ public partial class MainWindow : Window
 
                 webClient.DownloadFileCompleted += (s, e) =>
                 {
-                    progress.Report((50, "Download complete. Extracting..."));
+                    progress.Report((50, "Download complete. Verifying..."));
+                    VerifyDownloadedFile(zipFilePath);
+
+                    progress.Report((50, "Verify complete. Extracting..."));
                     ExtractFiles(zipFilePath, destinationFolder, progress);
                 };
 
@@ -148,6 +154,55 @@ public partial class MainWindow : Window
                 Clipboard.SetText(ex.ToString());
             });
         }
+    }
+
+    private async void VerifyDownloadedFile(string filePath)
+    {
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string expectedHash = await client.GetStringAsync(hashUrl);
+                expectedHash = expectedHash.Trim();
+
+                string actualHash = ComputeSHA256(filePath);
+
+                if (!actualHash.Equals(expectedHash, StringComparison.OrdinalIgnoreCase))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show($"There is a problem with the downloaded file, please use the repair tool or report to us.", "File download verification failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    });
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error during verify: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Clipboard.SetText(ex.ToString());
+        }
+    }
+
+    static string ComputeSHA256(string filePath)
+    {
+        try
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                using (FileStream stream = File.OpenRead(filePath))
+                {
+                    byte[] hashBytes = sha256.ComputeHash(stream);
+                    return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error during verify: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Clipboard.SetText(ex.ToString());
+        }
+
+        return null;
     }
 
     private void ExtractFiles(string zipFilePath, string destinationFolder, IProgress<(int percent, string message)> progress)
@@ -195,7 +250,7 @@ public partial class MainWindow : Window
                 Dispatcher.Invoke(() =>
                 {
                     ShowNotification("Installation Complete", "Lithicsoft AI Studio has been installed!");
-                    Information.Content = "Waiting ...";
+                    Information.Content = "Waiting...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
                     isWorking = false;
@@ -206,7 +261,7 @@ public partial class MainWindow : Window
                 Dispatcher.Invoke(() =>
                 {
                     ShowNotification("Update Complete", "Lithicsoft AI Studio has been updated!");
-                    Information.Content = "Waiting ...";
+                    Information.Content = "Waiting...";
                     ControlButton.Content = "Repair";
                     ControlButton.IsEnabled = true;
                     isWorking = false;
